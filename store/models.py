@@ -24,7 +24,7 @@ class Author(models.Model):
             models.UniqueConstraint(fields=['first_name', 'last_name'],
                                     name="author_names_unique"),
         ]
-        db_table = "author"  # Default - appname_modelname
+        db_table = "author"  # Default - app name_modelname
         verbose_name = "Author123"
         verbose_name_plural = "Authors"
         get_latest_by = "created_on"  # Author.objects.latest()
