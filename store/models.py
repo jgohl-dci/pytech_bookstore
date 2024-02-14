@@ -1,26 +1,18 @@
 from django.db import models
 from django.utils.text import slugify
 
-# GENRE_CHOICES = (
-#         ('0', 'None'),
-#         ('1', 'Romance'),
-#         ('2', 'Sc-Fi'),
-#         ('3', 'Fantasy'),
-#         ('4', 'Drama'),
-#         ('5', 'Poetry'),
-#         ('6', 'Horror'),
-#     )
-
 
 class Genre(models.Model):
     name = models.CharField(max_length=200, unique=True)
+
+    def __str__(self):
+        return str(self.name)
 
 
 class Author(models.Model):
     first_name = models.CharField(max_length=100, null=True)
     last_name = models.CharField(max_length=100, null=True)
     email = models.EmailField(max_length=100, unique=True, db_index=True)
-    # genre = models.ManyToManyField(Genre)
     date_of_birth = models.DateField(null=False)
     created_on = models.DateField(auto_now_add=True)
     last_updated = models.DateTimeField(auto_now=True)
@@ -33,7 +25,7 @@ class Author(models.Model):
                                     name="author_names_unique"),
         ]
         db_table = "author"  # Default - appname_modelname
-        verbose_name = "Author"
+        verbose_name = "Author123"
         verbose_name_plural = "Authors"
         get_latest_by = "created_on"  # Author.objects.latest()
         indexes = [
@@ -42,12 +34,12 @@ class Author(models.Model):
         ]
 
     def __str__(self):
-        return str(self.first_name + self.last_name)
+        return str(self.first_name + ' ' + self.last_name)
 
 
 class Book(models.Model):
     title = models.CharField(max_length=200, null=False, unique=True)
-    author = models.ForeignKey('Author', on_delete=models.SET_NULL, null=True, related_name="books")
+    author = models.ForeignKey('Author', on_delete=models.SET_NULL, null=True, related_name="books")  # <model_name>_set - book_set
     summary = models.TextField(max_length=1000, null=False)
     isbn = models.CharField(max_length=13, unique=True, help_text="13 character string - ISBN Number")
     genre = models.ManyToManyField(Genre)
@@ -63,12 +55,21 @@ class Book(models.Model):
         super(Book, self).save(*args, **kwargs)
         # send_email
 
+    def __str__(self):
+        return str(self.title)
+
 
 class StoreManager(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
 
+    def __str__(self):
+        return str(self.first_name + ' ' + self.last_name)
+
 
 class StoreLocation(models.Model):
     store_name = models.CharField(max_length=100)
     manager_id = models.OneToOneField(StoreManager, on_delete=models.SET_NULL, null=True)
+
+    def __str__(self):
+        return str(self.store_name)
