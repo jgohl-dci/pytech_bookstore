@@ -1,6 +1,7 @@
 #  from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.decorators.http import require_http_methods
+from django.views import View
 
 
 def index(request):
@@ -37,3 +38,17 @@ def browse(request):
         return HttpResponseRedirect("/test")
     else:
         return HttpResponse(f"Hello. {request.user}")
+
+
+class SimpleClassBasedView(View):
+    http_method_names = ["DELETE", "GET"]
+
+    def get(self, request):
+        text = "This is a GET request"
+        if request.user.is_authenticated:
+            text = f"Hi {request.user}. This is a GET request"
+        return HttpResponse(text)
+
+    def post(self, request):
+        text = "This is a POST request"
+        return HttpResponse(text)
