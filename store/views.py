@@ -1,5 +1,6 @@
 #  from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
+from django.views.decorators.http import require_http_methods
 
 
 def index(request):
@@ -30,6 +31,7 @@ def test_view(request):
     return response
 
 
+@require_http_methods(["PUT", "GET"])
 def browse(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect("/test")
