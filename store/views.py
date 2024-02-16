@@ -1,54 +1,74 @@
-#  from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect
-from django.views.decorators.http import require_http_methods
+from django.http import HttpResponse
+from .models import Author, Book, Genre, StoreManager, StoreLocation
 from django.views import View
+from django.urls import reverse
 
 
 def index(request):
-    # text = "A basic function-based view"
-    # if text is not None:
-    #     text = "We changed it!"
-    # content = f"<h1>{text}</h1>"
-
-    # if request.method == "GET":
-    #     text = "This is a GET request"
-    # elif request.method == "POST":
-    #     text = "This is a POST request"
-
-    # cookie_info = request.COOKIES.get("sessionid")
-    logged_in = request.user.is_authenticated
-    if logged_in:
-        text = f"Welcome {request.user}"
-
-    return HttpResponse(text)
+    authors_link = f"<a href={reverse('store:author_list')}>Authors</a>"
+    books_link = f"<a href={reverse('store:book_list')}>Books</a>"
+    genres_link = f"<a href={reverse('store:genre_list')}>Genres</a>"
+    
+    content = f"<h3>Bookstore</h3><ul><li>{authors_link}</li> <li>{books_link}</li> <li>{genres_link}</li></ul>"
+    
+    return HttpResponse(content)
 
 
-def test_view(request):
-    response = HttpResponse()
-    if request.user.is_authenticated:
-        response.write(f"Welcome, {request.user}.")
-    else:
-        response.write("Please log in.")
-    return response
-
-
-@require_http_methods(["PUT", "GET"])
-def browse(request):
-    if not request.user.is_authenticated:
-        return HttpResponseRedirect("/test")
-    else:
-        return HttpResponse(f"Hello. {request.user}")
-
-
-class SimpleClassBasedView(View):
-    http_method_names = ["DELETE", "GET"]
-
+class AuthorListView(View):
     def get(self, request):
-        text = "This is a GET request"
-        if request.user.is_authenticated:
-            text = f"Hi {request.user}. This is a GET request"
-        return HttpResponse(text)
+        authors = Author.objects.all()
+        content = "<h3>Authors:</h3>"
 
-    def post(self, request):
-        text = "This is a POST request"
-        return HttpResponse(text)
+        for author in authors:
+            new_author = f"<li>{author.first_name} {author.last_name}</li>"
+            content += new_author
+
+        return HttpResponse(content)
+
+
+class BookListView(View):
+    def get(self, request):
+        books = Book.objects.all()
+        content = "<h3>Books:</h3>"
+
+        for book in books:
+            new_book = f"<li>{book.title} - written by: {book.author}</li>"
+            content += new_book
+
+        return HttpResponse(content)
+
+
+class GenreListView(View):
+    def get(self, request):
+        genres = Genre.objects.all()
+        content = "<h3>Genres:</h3>"
+
+        for genre in genres:
+            new_genre = f"<li>{genre}</li>"
+            content += new_genre
+
+        return HttpResponse(content)
+
+
+class StoreListView(View):
+    def get(self, request):
+        stores = StoreLocation.objects.all()
+        content = "<h3>Stores:</h3>"
+
+        for store in stores:
+            new_store = f"<li>{store.store_name}</li>"
+            content += new_store
+
+        return HttpResponse(content)
+
+
+class ManagerListView(View):
+    def get(self, request):
+        managers = StoreManager.objects.all()
+        content = "<h3>Managers:</h3>"
+
+        for manager in managers:
+            new_manager = f"<li>{manager}</li>"
+            content += new_manager
+
+        return HttpResponse(content)

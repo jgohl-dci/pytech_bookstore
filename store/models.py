@@ -5,6 +5,9 @@ from django.utils.text import slugify
 class Genre(models.Model):
     name = models.CharField(max_length=200, unique=True)
 
+    class Meta:     # set to auto order genres
+        ordering = ["name",]
+
     def __str__(self):
         return str(self.name)
 
@@ -48,6 +51,9 @@ class Book(models.Model):
     price = models.DecimalField(max_digits=5, decimal_places=2, null=False)  # 100.00
     slug = models.SlugField()
     discount = models.IntegerField()
+
+    class Meta:
+        ordering = ["title",]
 
     def save(self, *args, **kwargs):
         self.slug = slugify(str(self.title))
