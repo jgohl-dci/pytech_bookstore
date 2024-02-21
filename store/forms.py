@@ -19,6 +19,8 @@ class BookForm(forms.ModelForm):
 
 
 class AuthorForm(forms.ModelForm):
+    date_of_birth = forms.DateField(widget=forms.DateInput(format="%Y-%m-%d", attrs={"type": "date"}))
+
     class Meta:
         model = Author
         exclude = ['created_on', 'last_update']

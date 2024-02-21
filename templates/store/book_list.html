@@ -12,7 +12,13 @@
 									<a href="#">{{ book.title | lower }}</a>
 								</h1>
 								<div class="entry-meta">
-									<span class="post-category"><a href="#">{{ book.genre.all }}</a></span>
+								{% if book.genre.all %}
+									{% for genre1 in book.genre.all %}
+										<span class="post-category"><a href="#">{{ genre1 }}</a></span>
+									{% endfor %}
+								{% else %}
+									<span class="post-category"><a href="#">No Genre</a></span>
+								{% endif %}
 			
 									<span class="post-date"><a href="#">{{ book.date_of_publishing | date:"D d M Y"}}</a></span>
 			
