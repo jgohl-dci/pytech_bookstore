@@ -1,44 +1,55 @@
 from django.db import models
 from django.utils.text import slugify
 
+# GENRE_CHOICES = (
+#         ('0', 'None'),
+#         ('1', 'Romance'),
+#         ('2', 'Sc-Fi'),
+#         ('3', 'Fantasy'),
+#         ('4', 'Drama'),
+#         ('5', 'Poetry'),
+#         ('6', 'Horror'),
+#     )
+
 
 class Genre(models.Model):
     name = models.CharField(max_length=200, unique=True)
-
-    class Meta:     # set to auto order genres
+    
+    class Meta:
         ordering = ["name",]
-
+    
     def __str__(self):
-        return str(self.name)
+        return str(self.name) 
 
 
 class Author(models.Model):
     first_name = models.CharField(max_length=100, null=True)
     last_name = models.CharField(max_length=100, null=True)
     email = models.EmailField(max_length=100, unique=True, db_index=True)
+    # genre = models.ManyToManyField(Genre)
     date_of_birth = models.DateField(null=False)
     created_on = models.DateField(auto_now_add=True)
     last_updated = models.DateTimeField(auto_now=True)
     num_of_books = models.IntegerField()
-
+    
     class Meta:
         ordering = ['last_name', 'first_name',]  # order_by
         constraints = [
             models.UniqueConstraint(fields=['first_name', 'last_name'],
                                     name="author_names_unique"),
         ]
-        db_table = "author"  # Default - app name_modelname
-        verbose_name = "Author123"
+        db_table = "author"  # Default - appname_modelname
+        verbose_name = "Author"
         verbose_name_plural = "Authors"
         get_latest_by = "created_on"  # Author.objects.latest()
         indexes = [
             models.Index(fields=['last_name', 'first_name'], name="full_name_idx"),
             # models.Index(fields=['genre'], name="genre_idx"),
         ]
-
+        
     def __str__(self):
         return str(self.first_name + ' ' + self.last_name)
-
+        
 
 class Book(models.Model):
     title = models.CharField(max_length=200, null=False, unique=True)
@@ -48,13 +59,13 @@ class Book(models.Model):
     genre = models.ManyToManyField(Genre)
     date_of_publishing = models.DateField()
     in_stock = models.BooleanField(default=True)
-    price = models.DecimalField(max_digits=5, decimal_places=2, null=False)  # 100.00
+    price = models.DecimalField(max_digits=5, decimal_places=2, null=False)  #100.00
     slug = models.SlugField()
     discount = models.IntegerField()
-
+    
     class Meta:
-        ordering = ["title",]
-
+        ordering = ["title", "author",]
+    
     def save(self, *args, **kwargs):
         self.slug = slugify(str(self.title))
         self.discount = self.price // 5
@@ -68,7 +79,7 @@ class Book(models.Model):
 class StoreManager(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
-
+    
     def __str__(self):
         return str(self.first_name + ' ' + self.last_name)
 
@@ -76,6 +87,19 @@ class StoreManager(models.Model):
 class StoreLocation(models.Model):
     store_name = models.CharField(max_length=100)
     manager_id = models.OneToOneField(StoreManager, on_delete=models.SET_NULL, null=True)
-
+    
     def __str__(self):
         return str(self.store_name)
+        
+
+# class Animals(models.Model):
+#     pass
+
+#     class Meta:
+#         verbose_name_plural = "Animals"
+
+class Contact(models.Model):
+    name = models.CharField(max_length=200)
+    email = models.EmailField(max_length=200)
+    phone_number = models.CharField(max_length=20)
+    message = models.TextField()
