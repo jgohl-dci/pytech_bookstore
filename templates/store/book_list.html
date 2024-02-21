@@ -9,12 +9,12 @@
 						<article class="post post-1">
 							<header class="entry-header">
 								<h1 class="entry-title">
-									<a href="#">{{ book.title }}</a>
+									<a href="#">{{ book.title | lower }}</a>
 								</h1>
 								<div class="entry-meta">
 									<span class="post-category"><a href="#">{{ book.genre.all }}</a></span>
 			
-									<span class="post-date"><a href="#"><time class="entry-date" datetime="2012-11-09T23:15:57+00:00">{{ book.date_of_publishing }}</time></a></span>
+									<span class="post-date"><a href="#">{{ book.date_of_publishing | date:"D d M Y"}}</a></span>
 			
 									<span class="post-author"><a href="#">{{ book.author }}</a></span>
 								</div>

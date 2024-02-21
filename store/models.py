@@ -1,25 +1,15 @@
 from django.db import models
 from django.utils.text import slugify
 
-# GENRE_CHOICES = (
-#         ('0', 'None'),
-#         ('1', 'Romance'),
-#         ('2', 'Sc-Fi'),
-#         ('3', 'Fantasy'),
-#         ('4', 'Drama'),
-#         ('5', 'Poetry'),
-#         ('6', 'Horror'),
-#     )
-
 
 class Genre(models.Model):
     name = models.CharField(max_length=200, unique=True)
-    
+
     class Meta:
         ordering = ["name",]
-    
+
     def __str__(self):
-        return str(self.name) 
+        return str(self.name)
 
 
 class Author(models.Model):
@@ -31,7 +21,7 @@ class Author(models.Model):
     created_on = models.DateField(auto_now_add=True)
     last_updated = models.DateTimeField(auto_now=True)
     num_of_books = models.IntegerField()
-    
+
     class Meta:
         ordering = ['last_name', 'first_name',]  # order_by
         constraints = [
@@ -46,10 +36,10 @@ class Author(models.Model):
             models.Index(fields=['last_name', 'first_name'], name="full_name_idx"),
             # models.Index(fields=['genre'], name="genre_idx"),
         ]
-        
+
     def __str__(self):
         return str(self.first_name + ' ' + self.last_name)
-        
+
 
 class Book(models.Model):
     title = models.CharField(max_length=200, null=False, unique=True)
@@ -62,10 +52,10 @@ class Book(models.Model):
     price = models.DecimalField(max_digits=5, decimal_places=2, null=False)  #100.00
     slug = models.SlugField()
     discount = models.IntegerField()
-    
+
     class Meta:
         ordering = ["title", "author",]
-    
+
     def save(self, *args, **kwargs):
         self.slug = slugify(str(self.title))
         self.discount = self.price // 5
@@ -79,7 +69,7 @@ class Book(models.Model):
 class StoreManager(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
-    
+
     def __str__(self):
         return str(self.first_name + ' ' + self.last_name)
 
@@ -87,10 +77,10 @@ class StoreManager(models.Model):
 class StoreLocation(models.Model):
     store_name = models.CharField(max_length=100)
     manager_id = models.OneToOneField(StoreManager, on_delete=models.SET_NULL, null=True)
-    
+
     def __str__(self):
         return str(self.store_name)
-        
+
 
 # class Animals(models.Model):
 #     pass

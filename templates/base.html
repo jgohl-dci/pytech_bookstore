@@ -34,9 +34,9 @@
 						<nav class="main-nav" role="navigation">
 							<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
   								<ul class="nav navbar-nav navbar-right">
-    								<li class="cl-effect-11"><a href="#" data-hover="Home">Home</a></li>
-    								<li class="cl-effect-11"><a href="#" data-hover="Store">Store</a></li>
-    								<li class="cl-effect-11"><a href="#" data-hover="Contact">Contact</a></li>
+    								<li class="cl-effect-11"><a href="{% url 'store:home' %}" data-hover="Home">Home</a></li>
+    								<li class="cl-effect-11"><a href="{% url 'store:book_list' %}" data-hover="Store">Store</a></li>
+    								<li class="cl-effect-11"><a href="{% url 'store:contact' %}" data-hover="Contact">Contact</a></li>
   								</ul>
 							</div><!-- /.navbar-collapse -->
 						</nav>

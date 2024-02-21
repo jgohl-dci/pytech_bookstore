@@ -1,5 +1,5 @@
-from django import forms 
-from .models import Book
+from django import forms
+from .models import Book, Author
 
 
 class ContactForm(forms.Form):
@@ -11,8 +11,14 @@ class ContactForm(forms.Form):
 
 class BookForm(forms.ModelForm):
     dummy_field = forms.CharField(max_length=10)
-    
+
     class Meta:
         model = Book
         fields = ['title', 'author', 'summary', 'isbn', 'genre', 'date_of_publishing', 'in_stock', 'price']
         exclude = ['discount', 'slug']
+
+
+class AuthorForm(forms.ModelForm):
+    class Meta:
+        model = Author
+        exclude = ['created_on', 'last_update']
