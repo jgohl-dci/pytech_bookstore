@@ -11,7 +11,11 @@ from django.views.generic import TemplateView
 
 def index(request):
     num_of_books = Book.objects.all().count()
-    return render(request, "store/index.html", {"num_of_books": num_of_books})
+    page_visits = request.session.get("page_visits", 0)
+    request.session['page_visits'] = page_visits + 1
+    request.session['cart'] = {"product_id": "quantity"}
+
+    return render(request, "store/index.html", {"num_of_books": num_of_books, "page_visits": page_visits})
 
 
 class AuthorListView(View):
@@ -19,6 +23,9 @@ class AuthorListView(View):
     def get(self, request):
         # Retrieving the full list of authors as queryset
         authors = Author.objects.all()
+
+        del request.session["page_visits"]
+
         return render(request, "store/author_list.html", {"authors": authors})
 
 
