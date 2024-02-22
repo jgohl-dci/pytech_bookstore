@@ -8,6 +8,11 @@
 						<h1 class="page-title">Welcome to the Pytech Bookstore</h1>
 						<article class="post">
 							<div class="entry-content clearfix">
+								{% if user.is_authenticated %}
+									<h4>Logged in as: {{ user.username }}</h4>
+								{% else %}
+									<a href="{% url 'user:login' %}">
+								{% endif %}
 								<p>
 									Have you ever wondered how many books have been published? 
 									Although it’s impossible for us to come up with an exact number, 
@@ -17,6 +22,7 @@
 								<p>
 									Number of books in Stock: {{ num_of_books }}
 								</p>
+
 								<p>You have visited this page {{ page_visits }} time{{ page_visits | pluralize }}</p>
 
 								<div class="height-40px"></div>				
