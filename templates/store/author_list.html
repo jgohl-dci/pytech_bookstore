@@ -9,7 +9,7 @@
 							<h3 class="widget-title">All the authors in our store</h3>		
 							<ul>
 								{% for author in authors %}
-								<li><a href="#">{{ author }}</a></li>
+								<li><a href="{{ author.get_absolute_url }}">{{ author }}</a></li>
 								{% endfor %}
 							</ul>
 						</div>

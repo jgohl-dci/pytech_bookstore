@@ -5,7 +5,7 @@ from .models import Book, Author
 class ContactForm(forms.Form):
     name = forms.CharField(max_length=200)
     email = forms.EmailField(max_length=200)
-    phone_number = forms.CharField(max_length=20)
+    phone_number = forms.CharField(max_length=20, label="Phone number")
     message = forms.CharField(widget=forms.Textarea(attrs={"rows": "10"}))
 
 

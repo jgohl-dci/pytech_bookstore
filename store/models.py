@@ -41,13 +41,13 @@ class Author(models.Model):
     def __str__(self):
         return str(self.first_name + ' ' + self.last_name)
 
-    # def get_absolute_url(self):
-    #     return reverse(XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX)
+    def get_absolute_url(self):
+        return reverse("store:author_detail", args=[self.id])
 
 
 class Book(models.Model):
     title = models.CharField(max_length=200, null=False, unique=True)
-    author = models.ForeignKey('Author', on_delete=models.SET_NULL, null=True, related_name="books")  # <model_name>_set - book_set
+    author = models.ForeignKey('Author', on_delete=models.SET_NULL, null=True, related_name="books")
     summary = models.TextField(max_length=1000, null=False)
     isbn = models.CharField(max_length=13, unique=True, help_text="13 character string - ISBN Number")
     genre = models.ManyToManyField(Genre)
