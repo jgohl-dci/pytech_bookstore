@@ -97,3 +97,8 @@ def contact(request):
             return redirect('store:home')
         else:
             return render(request, 'store/contact.html', {"form": form})
+
+
+def author_detail(request, author_id):
+    author = Author.objects.get(id=author_id)
+    return render(request, 'store/author_detail.html', {"authors": author})

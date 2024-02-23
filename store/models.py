@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.text import slugify
+from django.urls import reverse
 
 
 class Genre(models.Model):
@@ -17,7 +18,7 @@ class Author(models.Model):
     last_name = models.CharField(max_length=100, null=True)
     email = models.EmailField(max_length=100, unique=True, db_index=True)
     # genre = models.ManyToManyField(Genre)
-    date_of_birth = models.DateField(null=False)
+    date_of_birth = models.DateField(null=False, verbose_name="Date of birth")
     created_on = models.DateField(auto_now_add=True)
     last_updated = models.DateTimeField(auto_now=True)
     num_of_books = models.IntegerField()
@@ -40,6 +41,9 @@ class Author(models.Model):
     def __str__(self):
         return str(self.first_name + ' ' + self.last_name)
 
+    # def get_absolute_url(self):
+    #     return reverse(XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX)
+
 
 class Book(models.Model):
     title = models.CharField(max_length=200, null=False, unique=True)
@@ -49,7 +53,7 @@ class Book(models.Model):
     genre = models.ManyToManyField(Genre)
     date_of_publishing = models.DateField()
     in_stock = models.BooleanField(default=True)
-    price = models.DecimalField(max_digits=5, decimal_places=2, null=False)  #100.00
+    price = models.DecimalField(max_digits=5, decimal_places=2, null=False)  # 100.00
     slug = models.SlugField()
     discount = models.IntegerField()
 

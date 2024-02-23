@@ -10,4 +10,5 @@ urlpatterns = [
     path("genres/", views.GenreListView.as_view(), name="genre_list"),
     path("contact/", views.contact, name="contact"),
     path("authors/create/", views.AuthorCreateView.as_view(), name="author_create"),
+    path("authors/<int:author_id>/", views.author_detail, name="author_detail"),
 ]
