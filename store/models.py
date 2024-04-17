@@ -86,12 +86,6 @@ class StoreLocation(models.Model):
         return str(self.store_name)
 
 
-# class Animals(models.Model):
-#     pass
-
-#     class Meta:
-#         verbose_name_plural = "Animals"
-
 class Contact(models.Model):
     name = models.CharField(max_length=200)
     email = models.EmailField(max_length=200)
